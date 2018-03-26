@@ -25,11 +25,10 @@ abstract public class Mqtt implements MqttCallback
 {
     private MqttConnection mqttConnection;
     private MqttMessageListener messageListener;
-    private DeviceClientConfig deviceClientConfig = null;
     ConcurrentLinkedQueue<Pair<String, byte[]>> allReceivedMessages;
     Object mqttLock = null;
 
-    private Map<Integer, Message> unacknowledgedSentMessages = new ConcurrentHashMap<>();
+    private static Map<Integer, Message> unacknowledgedSentMessages = new ConcurrentHashMap<>();
 
     // SAS token expiration check on retry
     private boolean userSpecifiedSASTokenExpiredOnRetry = false;
@@ -245,7 +244,7 @@ abstract public class Mqtt implements MqttCallback
                 {
 
                     //Codes_SRS_Mqtt_25_015: [If the MQTT connection is closed, the function shall throw a TransportException with message.]
-                    TransportException transportException = new TransportException("Cannot suscribe when mqtt client is disconnected");
+                    TransportException transportException = new TransportException("Cannot subscribe when mqtt client is disconnected");
                     transportException.setRetryable(true);
                     throw transportException;
                 }
@@ -374,22 +373,6 @@ abstract public class Mqtt implements MqttCallback
     public Pair<String, byte[]> peekMessage()
     {
         return this.allReceivedMessages.peek();
-    }
-
-    /**
-     * Set device client configuration used for SAS token validation.
-     * @param deviceConfig is the device client configuration to be set
-     * @throws IllegalArgumentException if device client configuration is null
-     */
-    protected void setDeviceClientConfig(DeviceClientConfig deviceConfig) throws IllegalArgumentException
-    {
-        if (deviceConfig == null)
-        {
-            //Codes_SRS_Mqtt_99_50: [If deviceConfig is null, the function shall throw a TransportException]
-            throw new IllegalArgumentException("DeviceClientConfig is null");
-        }
-
-        this.deviceClientConfig = deviceConfig; // set device client config object
     }
 
     /**

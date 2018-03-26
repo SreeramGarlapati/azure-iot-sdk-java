@@ -407,8 +407,6 @@ public class MqttIotHubConnectionTest
                     times = 0;
                     Deencapsulation.invoke(mockedMqttConnection, "setMqttCallback", mockDeviceMessaging);
                     times = 0;
-                    Deencapsulation.invoke(mockDeviceMessaging, "setDeviceClientConfig", mockConfig);
-                    times = 0;
                     new MqttDeviceTwin(mockedMqttConnection);
                     times = 0;
                     new MqttDeviceMethod(mockedMqttConnection);
@@ -513,7 +511,6 @@ public class MqttIotHubConnectionTest
                 new MqttMessaging(mockedMqttConnection, anyString, (IotHubListener) any, null);
                 result = mockDeviceMessaging;
                 Deencapsulation.invoke(mockedMqttConnection, "setMqttCallback", mockDeviceMessaging);
-                Deencapsulation.invoke(mockDeviceMessaging, "setDeviceClientConfig", mockConfig);
                 new MqttDeviceMethod(mockedMqttConnection);
                 result = mockDeviceMethod;
                 new MqttDeviceTwin(mockedMqttConnection);
@@ -1517,7 +1514,7 @@ public class MqttIotHubConnectionTest
         };
     }
 
-    private void openExpectations() throws IOException, TransportException
+    private void openExpectations() throws TransportException
     {
         new NonStrictExpectations()
         {
@@ -1529,7 +1526,6 @@ public class MqttIotHubConnectionTest
                 new MqttMessaging(mockedMqttConnection, anyString, (IotHubListener) any, null);
                 result = mockDeviceMessaging;
                 Deencapsulation.invoke(mockedMqttConnection, "setMqttCallback", mockDeviceMessaging);
-                Deencapsulation.invoke(mockDeviceMessaging, "setDeviceClientConfig", mockConfig);
                 new MqttDeviceTwin(mockedMqttConnection);
                 result = mockDeviceTwin;
                 new MqttDeviceMethod(mockedMqttConnection);
